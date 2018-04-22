@@ -6,12 +6,15 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+	"strings"
 
 	codeship "github.com/codeship/codeship-go"
 	"github.com/gizak/termui"
 )
 
 func makeInterface(projectsList *termui.List, buildsTable *termui.Table) {
+	termui.Clear()
+	termui.Body.Rows = termui.Body.Rows[:0]
 	termui.Body.AddRows(
 		termui.NewRow(
 			termui.NewCol(3, 0, projectsList),
@@ -33,7 +36,7 @@ func makeProjectsList(projects []codeship.Project) *termui.List {
 	ls.Items = strs
 	ls.ItemFgColor = termui.ColorYellow
 	ls.BorderLabel = "Projects"
-	ls.Height = termui.TermHeight()
+	ls.Height = len(strs)
 
 	return ls
 }
@@ -48,7 +51,16 @@ func makeBuildsTable(builds []codeship.Build) *termui.Table {
 		if len(commitMessage) > 70 {
 			commitMessage = build.CommitMessage[:70]
 		}
-		rows = append(rows, []string{build.AllocatedAt.Format("02/01/06 03:04:05"), build.FinishedAt.Format("02/01/06 03:04:05"), commitMessage, build.Status, build.Username})
+
+		status := fmt.Sprintf("[%s](fg-cyan)", build.Status)
+		if strings.Contains(build.Status, "success") {
+			status = fmt.Sprintf("[%s](fg-green)", build.Status)
+		}
+		if strings.Contains(build.Status, "error") {
+			status = fmt.Sprintf("[%s](fg-red)", build.Status)
+		}
+
+		rows = append(rows, []string{build.AllocatedAt.Format("02/01/06 03:04:05"), build.FinishedAt.Format("02/01/06 03:04:05"), commitMessage, status, build.Username})
 	}
 
 	table := termui.NewTable()
@@ -57,7 +69,9 @@ func makeBuildsTable(builds []codeship.Build) *termui.Table {
 	table.BgColor = termui.ColorDefault
 	table.Separator = false
 	table.CellWidth = []int{50, 50, 200, 10, 20}
+	table.Analysis()
 	table.SetSize()
+	table.BgColors[0] = termui.ColorRed
 
 	return table
 }
