@@ -41,7 +41,7 @@ func NewCodeShipProviderFromCredentials(user string, password string, organizati
 
 // GetHeader gets the header to display for Codeship
 func (c *CodeShipProvider) GetHeader() (string, error) {
-	return "Type the number that references the project\n to display :", nil
+	return "Input the index of the project :", nil
 }
 
 // GetProjectsList gets the projects list
