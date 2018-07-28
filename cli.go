@@ -28,6 +28,11 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+
+	err = termUI.Start()
+	if err != nil {
+		panic(err)
+	}
 	defer termUI.Close()
 
 	header, err := provider.GetHeader()
@@ -57,6 +62,7 @@ func main() {
 		}
 
 		termUI.SetBuildsList(builds)
+		termUI.Clear()
 		termUI.Render()
 	})
 

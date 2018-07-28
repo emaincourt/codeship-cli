@@ -16,15 +16,6 @@ type Term struct {
 
 // NewTerm instantiates a new empty Term
 func NewTerm() (*Term, error) {
-	err := termui.Init()
-	if err != nil {
-		return nil, err
-	}
-
-	termui.Handle("/sys/kbd/q", func(termui.Event) {
-		termui.StopLoop()
-	})
-
 	return &Term{
 		Header:   &termui.Par{},
 		Projects: &termui.List{},
@@ -37,7 +28,7 @@ func (t *Term) SetHeader(content string) error {
 	block := *termui.NewBlock()
 	block.Height = 4
 	block.Width = 17
-	block.BorderLabel = "Codeship CLI 0.0.1"
+	block.BorderLabel = "Codeship CLI 1.0.0"
 
 	t.Header = &termui.Par{
 		Block: block,
@@ -126,9 +117,27 @@ func (t *Term) AddKeyPressHandler(fn func(e termui.Event)) error {
 	return nil
 }
 
+// Start initializes termui
+func (t *Term) Start() error {
+	err := termui.Init()
+	if err != nil {
+		return err
+	}
+
+	termui.Handle("/sys/kbd/q", func(termui.Event) {
+		termui.StopLoop()
+	})
+	return nil
+}
+
 // Loop starts the loop of the underlying termui
 func (t *Term) Loop() {
 	termui.Loop()
+}
+
+// Clear clears the ui
+func (t *Term) Clear() {
+	termui.Clear()
 }
 
 // Close closes the loop of the underlying termui
