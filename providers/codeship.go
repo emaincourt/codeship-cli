@@ -8,12 +8,18 @@ import (
 	codeship "github.com/codeship/codeship-go"
 )
 
+// CodeShipAPI interfaces the Codeship API
+type CodeShipAPI interface {
+	ListProjects(ctx context.Context, opts ...codeship.PaginationOption) (codeship.ProjectList, codeship.Response, error)
+	ListBuilds(ctx context.Context, projectUUID string, opts ...codeship.PaginationOption) (codeship.BuildList, codeship.Response, error)
+}
+
 // CodeShipProvider refers to a codeship provider
 type CodeShipProvider struct {
 	Provider
 
-	Context      context.Context
-	Organization *codeship.Organization
+	Context context.Context
+	API     CodeShipAPI
 
 	Projects []codeship.Project
 }
@@ -34,8 +40,8 @@ func NewCodeShipProviderFromCredentials(user string, password string, organizati
 	}
 
 	return &CodeShipProvider{
-		Context:      ctx,
-		Organization: org,
+		Context: ctx,
+		API:     org,
 	}, nil
 }
 
@@ -46,7 +52,7 @@ func (c *CodeShipProvider) GetHeader() (string, error) {
 
 // GetProjectsList gets the projects list
 func (c *CodeShipProvider) GetProjectsList() ([]string, error) {
-	res, _, err := c.Organization.ListProjects(c.Context)
+	res, _, err := c.API.ListProjects(c.Context)
 	if err != nil {
 		return nil, err
 	}
@@ -68,7 +74,7 @@ func (c *CodeShipProvider) GetProjectIDFromIndex(index int) (string, error) {
 
 // GetBuildsList gets the builds list
 func (c *CodeShipProvider) GetBuildsList(uuid string) ([]Build, error) {
-	res, _, err := c.Organization.ListBuilds(c.Context, uuid)
+	res, _, err := c.API.ListBuilds(c.Context, uuid)
 	if err != nil {
 		return nil, err
 	}
