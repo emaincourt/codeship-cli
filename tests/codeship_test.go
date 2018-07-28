@@ -10,6 +10,7 @@ import (
 	"github.com/emaincourt/codeship-cli/providers"
 	"github.com/emaincourt/codeship-cli/tests/mocks"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestGetHeader(t *testing.T) {
@@ -39,9 +40,9 @@ func TestGetProjectsList(t *testing.T) {
 
 	projects, _ := codeshipProvider.GetProjectsList()
 
-	if len(projects) != 2 || projects[0] != "[0] Project#0" || projects[1] != "[1] Project#1" {
-		t.Errorf("Expected another output. Received : <%v>", projects)
-	}
+	assert.Equal(t, len(projects), 2)
+	assert.Equal(t, projects[0], "[0] Project#0")
+	assert.Equal(t, projects[1], "[1] Project#1")
 }
 
 func TestGetGetBuildsList(t *testing.T) {
@@ -74,16 +75,8 @@ func TestGetGetBuildsList(t *testing.T) {
 
 	builds, _ := codeshipProvider.GetBuildsList("any-uuid")
 
-	if len(builds) != 2 {
-		t.Errorf("Builds length should equal 2. Received %d", len(builds))
-	}
-	if builds[0].StartedAt != time.Date(2018, 7, 1, 0, 0, 0, 0, time.UTC).Format("02/01/06 03:04:05") {
-		t.Errorf("Dates format does not match the expected one. Received : %s", builds[0].StartedAt)
-	}
-	if builds[0].Status != fmt.Sprintf("[%s](fg-green)", "success") {
-		t.Errorf("Status format does not match the expected one. Received : %s", builds[0].Status)
-	}
-	if builds[1].Status != fmt.Sprintf("[%s](fg-red)", "error") {
-		t.Errorf("Status format does not match the expected one. Received : %s", builds[0].Status)
-	}
+	assert.Equal(t, len(builds), 2)
+	assert.Equal(t, builds[0].StartedAt, time.Date(2018, 7, 1, 0, 0, 0, 0, time.UTC).Format("02/01/06 03:04:05"))
+	assert.Equal(t, builds[0].Status, fmt.Sprintf("[%s](fg-green)", "success"))
+	assert.Equal(t, builds[1].Status, fmt.Sprintf("[%s](fg-red)", "failed"))
 }

@@ -91,7 +91,7 @@ func (c *CodeShipProvider) GetBuildsList(uuid string) ([]Build, error) {
 			status = fmt.Sprintf("[%s](fg-green)", build.Status)
 		}
 		if strings.Contains(build.Status, "error") {
-			status = fmt.Sprintf("[%s](fg-red)", build.Status)
+			status = fmt.Sprintf("[%s](fg-red)", "failed")
 		}
 
 		builds = append(builds, Build{
