@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"os"
 	"strconv"
 	"time"
@@ -13,13 +14,20 @@ import (
 
 func main() {
 	organization := flag.String("org", "", "The name of the organization.")
+	username := flag.String("username", os.Getenv("CODESHIP_USERNAME"), "Codeship username.")
+	password := flag.String("password", os.Getenv("CODESHIP_PASSWORD"), "Codeship password.")
 
 	flag.Parse()
 
-	codeshipUser := os.Getenv("CODESHIP_USERNAME")
-	codeshipPass := os.Getenv("CODESHIP_PASSWORD")
+	if *username == "" {
+		panic(fmt.Errorf("username must be provided either from env var CODESHIP_USERNAME or --username"))
+	}
 
-	provider, err := providers.NewCodeShipProviderFromCredentials(codeshipUser, codeshipPass, *organization)
+	if *password == "" {
+		panic(fmt.Errorf("password must be provided either from env var CODESHIP_PASSWORD or --password"))
+	}
+
+	provider, err := providers.NewCodeShipProviderFromCredentials(*username, *password, *organization)
 	if err != nil {
 		panic(err)
 	}

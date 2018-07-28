@@ -12,9 +12,17 @@ go get github.com/emaincourt/codeship-cli
 
 ## Usage
 
-You currently need to set the following env vars to allow access to [Codeship](https://codeship.com/) :
+There are currently two ways to provide your [Codeship](https://codeship.com/) credentials :
+
+From env vars :
 * `CODESHIP_USERNAME`
 * `CODESHIP_PASSWORD`
+
+From flags :
+* `--username`
+* `--password`
+
+> Flags will always be prevalent on env vars
 
 Keep in mind that it is currently not possible to use 2FA with Codeship's API.
 
