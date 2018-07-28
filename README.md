@@ -1,8 +1,12 @@
-# <div style="display:flex; flex-direction:row"><img src="https://i.vimeocdn.com/portrait/5336365_300x300" width="50px" height="50px"><p>&nbsp;codeship-cli<p/></div>
+# <div style="display:flex; flex-direction:row"><img src="https://i.vimeocdn.com/portrait/5336365_300x300" width="50px" height="50px">&nbsp;codeship-cli</div>
 
 ## Description
 
 This CLI tends to be a small tool for monitoring builds on Codeship without need to use the web interface, for efficiency purpose.
+
+<p align="center">
+  <img width="60%" src="https://s1.gifyu.com/images/2018-07-28-13.34.42.gif">
+</p>
 
 ## Installation
 
