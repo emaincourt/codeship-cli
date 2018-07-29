@@ -17,9 +17,7 @@ func TestGetHeader(t *testing.T) {
 	codeshipProvider := providers.CodeShipProvider{}
 	header, _ := codeshipProvider.GetHeader()
 
-	if header != "Input the index of the project :" {
-		t.Errorf("Expected another output. Received : <%s>", header)
-	}
+	assert.Equal(t, header, "Input the index of the project :")
 }
 
 func TestGetProjectsList(t *testing.T) {

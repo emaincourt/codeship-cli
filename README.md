@@ -1,3 +1,5 @@
+[ ![Codeship Status for emaincourt/codeship-cli](https://app.codeship.com/projects/926858d0-74c5-0136-87ef-06aa68e587da/status?branch=master)](https://app.codeship.com/projects/299734)
+
 # <div style="display:flex; flex-direction:row"><img src="https://i.vimeocdn.com/portrait/5336365_300x300" width="50px" height="50px">&nbsp;codeship-cli</div>
 
 ## Description
